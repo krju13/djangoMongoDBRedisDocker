@@ -1,0 +1,7 @@
+Django==3.2
+wheel
+dnspython
+djangorestframework
+djongo
+pymongo==3.12.1
+django-redis

@@ -1,0 +1,45 @@
+version: "3.9"
+
+networks:
+  djangoprojectnet:
+
+services:
+  django-mongodb:
+    image: mongo:5.0
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: krju13
+      MONGO_INITDB_ROOT_PASSWORD: krju13
+      MONGO_INITDB_DATABASE: djangorest
+    ports:
+      - "27017:27017"
+    networks:
+      - djangoprojectnet
+    volumes:
+      - songlist:/var/lib/mongo/data
+  django-web:
+    build: .   
+    command:  bash -c "python3 ./djangomongoredis/manage.py makemigrations && python3 ./djangomongoredis/manage.py migrate && python3 ./djangomongoredis/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - django-mongodb
+      - django-cache
+    networks:
+      - djangoprojectnet
+  django-cache:
+    image: redis:6
+    command: redis-server --requirepass password --port 6379
+    restart: always
+    ports:
+      - "127.0.0.1:6379:6379"
+    volumes:
+      - cache-volume:/code
+    networks:
+      - djangoprojectnet
+
+volumes:
+  songlist:
+  cache-volume:
