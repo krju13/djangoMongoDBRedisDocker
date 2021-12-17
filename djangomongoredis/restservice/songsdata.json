@@ -1,3 +1,5 @@
+curl --data '{"title":"mama","singer":"exo","producer":"lee","entertainment":"sm","tracknum":2}' -H "Content-Type: application/json" -X POST http://localhost:8000/song/
+
 [
     {
         "model":"restservice.Song",

@@ -19,7 +19,7 @@ services:
       - songlist:/var/lib/mongo/data
   django-web:
     build: .   
-    command:  bash -c "python3 ./djangomongoredis/manage.py makemigrations && python3 ./djangomongoredis/manage.py migrate && python3 ./djangomongoredis/manage.py runserver 0.0.0.0:8000"
+    command:  bash -c "pip install gunicorn && cd djangomongoredis && python3 manage.py makemigrations && python3 manage.py migrate && gunicorn djangomongoredis.wsgi:application -b 0.0.0.0:8000"
     volumes:
       - .:/code
     ports:
